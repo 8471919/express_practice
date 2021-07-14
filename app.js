@@ -45,8 +45,27 @@ app.post("/email_post", (req, res, next) => {
 
 app.post("/ajax_send_email", (req, res, next) => {
     //json형태로 받기때문에 express.json()이 있어야 한다.
-    console.log(req.body.email);
+    // console.log(req.body.email);
+
     //check validation about input value => select db
-    const responseData = { result: "ok", email: req.body.email };
-    res.json(responseData);
+    // const responseData = { result: "ok", email: req.body.email };
+    // res.json(responseData);
+
+    const email = req.body.email;
+    const responseData = {};
+
+    const query = connection.query(
+        'select name from user where email="' + email + '"',
+        function (err, rows) {
+            if (err) throw err;
+            if (rows[0]) {
+                responseData.result = "ok";
+                responseData.name = rows[0].name;
+            } else {
+                responseData.result = "none";
+                responseData.name = "";
+            }
+            res.json(responseData);
+        }
+    );
 });
