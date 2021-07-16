@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>검색실습</title>
+        <link rel="stylesheet" href="/stylesheets/style.css" />
+    </head>
+
+    <body>
+        <h1>검색창</h1>
+        <form action="/result_post" method="post">
+            <input type="text" name="result" />
+            <input type="submit" value="검색" />
+        </form>
+
+        <button class="fetched">fetch</button>
+
+        <div class="result"></div>
+
+        <script>
+            document.querySelector(".fetched").addEventListener("click", () => {
+                const inputdata = document.forms[0].elements[0].value;
+                addContent("/fetch_result", inputdata);
+            });
+            const addContent = async (url, data) => {
+                let dat = { result: data };
+                const res = await fetch(url, {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    method: "POST",
+                    body: JSON.stringify(dat),
+                });
+                const result = await res.json();
+                const resultDiv = document.getElementsByClassName("result")[0];
+                console.log(resultDiv);
+                resultDiv.innerHTML = `result : ${result.result}`;
+            };
+        </script>
+    </body>
+</html>
