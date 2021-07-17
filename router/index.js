@@ -7,7 +7,6 @@ const email = require("./email/email");
 const join = require("./join/index");
 
 router.get("/", (req, res, next) => {
-    console.log("test");
     // res.send("<h1>hi friend1</h>");
     res.sendFile(path.join(__dirname + "/../public/main.html"));
 });
