@@ -42,7 +42,8 @@
                     const result = JSON.parse(xhr.responseText);
                     const resultDiv = document.querySelector(".result");
                     if (result.email)
-                        resultDiv.innerHTML = "welcome, " + result.email + "!!";
+                        //resultDiv.innerHTML = "welcome, " + result.email + "!!";
+                        window.location.href = "/main";
                     else resultDiv.innerHTML = result;
                 });
             };
