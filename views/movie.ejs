@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Movie list</title>
+    </head>
+    <body>
+        <h1>movie list</h1>
+        <section class="showWrap">
+            <ul>
+                <li class="get_all">
+                    <button>모든영화보기</button>
+                    <section class="showResult"></section>
+                </li>
+
+                <li class="post">
+                    <form action="" method="post">
+                        <div>
+                            제목
+                            <input
+                                type="text"
+                                name="title"
+                                placeholder="Terminator"
+                            />
+                        </div>
+                        <div>
+                            장르
+                            <input
+                                type="text"
+                                name="type"
+                                placeholder="drama"
+                            />
+                        </div>
+                        <div>
+                            평점
+                            <input
+                                type="text"
+                                name="grade"
+                                placeholder="8.43"
+                            />
+                        </div>
+                        <div>
+                            주연
+                            <input
+                                type="text"
+                                name="actor"
+                                placeholder="Tom cruise"
+                            />
+                        </div>
+                    </form>
+                    <button>영화추가</button>
+                    <section class="showResult"></section>
+                </li>
+
+                <li class="get_id">
+                    <input type="text" name="title" />
+                    <button>영화상세정보</button>
+                    <section class="showResult"></section>
+                </li>
+
+                <li class="delete_id">
+                    <input type="text" name="title" />
+                    <button>영화삭제</button>
+                    <section class="showResult"></section>
+                </li>
+
+                <li class="update_id">
+                    <form action="" method="post">
+                        <div>
+                            제목
+                            <input
+                                type="text"
+                                name="title"
+                                placeholder="Terminator"
+                            />
+                        </div>
+                        <div>
+                            장르
+                            <input
+                                type="text"
+                                name="type"
+                                placeholder="drama"
+                            />
+                        </div>
+                        <div>
+                            평점
+                            <input
+                                type="text"
+                                name="grade"
+                                placeholder="8.43"
+                            />
+                        </div>
+                        <div>
+                            주연
+                            <input
+                                type="text"
+                                name="actor"
+                                placeholder="Tom cruise"
+                            />
+                        </div>
+                    </form>
+                    <button>영화정보갱신</button>
+                    <section class="showResult">ㅁㅁ</section>
+                </li>
+
+                <li class="get_min">
+                    <button>현재 상영중인영화</button>
+                    <section class="showResult">aaa</section>
+                </li>
+            </ul>
+        </section>
+
+        <script>
+            document
+                .querySelector(".showWrap")
+                .addEventListener("click", (e) => {
+                    let url, method, data;
+                    //이벤트가 발생한 대상을 찾아낸다.
+                    const target = e.target;
+                    //target을 포함하여 target의 부모요소들을 최상위까지 검색하며, LI태그를 갖고있는지 확인한다.
+                    //target~최상위 부모까지(다른 자식들은 건드리지 않는다.) 검색하면서, li태그를 갖고있는 가장 가까운 요소를 반환.
+                    //target.closest("LI").css('background-color', 'red'); 이런 식으로도 사용가능.
+                    const li = target.closest("LI");
+                    const showResult = li.querySelector(".showResult");
+                    const type = li.className;
+
+                    if (target.tagName !== "BUTTON") return;
+
+                    switch (type) {
+                        case "get_all":
+                            url = "/movie";
+                            method = "GET";
+                            break;
+                        case "post":
+                            url = "/movie";
+                            method = "POST";
+                            let inputs = [].slice.call(
+                                document.querySelector("form").elements
+                            );
+                            data = inputs.reduce((acc, cur) => {
+                                acc[cur.name] = cur.value;
+                                return acc;
+                            }, {});
+                            break;
+                        default:
+                            // statements_def
+                            console.log("default");
+                            break;
+                    }
+                    sendAjax(
+                        "http://127.0.0.1:3000/movie",
+                        method,
+                        data,
+                        showResult
+                    );
+                });
+
+                //@data : json format.
+                const sendAjax = (url, method, data, resultEle) {
+                    const xhr = new XMLHttpRequest();
+                    xhr.open(mmethod, url);
+
+                    if(data) {
+                        data = JSON.stringify(data);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                    } else {
+                        data = null;
+                    }
+
+                    xhr.send(data);
+
+                    xhr.addEventListener('load', () => {
+                        const result = JSON.parse(xhr.reponseText);
+
+                        if(result.result === 1) {
+                            let titles = result.data.reduce((acc, cur) => {
+                                acc += "<li>" + cur.title + "</li>";
+                                return acc;
+                            }, "");
+                            resultEle.innerHTML = "<ul>" + titles + "</ul>";
+                        } else {
+                            resultEle.innerHTML = 'list not found';
+                        }
+                    });
+                }
+        </script>
+    </body>
+</html>
