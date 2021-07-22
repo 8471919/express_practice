@@ -44,7 +44,7 @@ router.post("/", (req, res, next) => {
     // const isowner = await bcrypt.compare(password, hashedPassword);
     // const password = req.body.password;
     const query = connection.query(
-        `select * from user where email="${email}"`,
+        `select * from user where email="${email}" LIMIT 1`,
         (err, rows) => {
             if (err) throw err;
             //중복확인
