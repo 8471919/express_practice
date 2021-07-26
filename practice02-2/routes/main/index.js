@@ -1,8 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const join = require("./join/index");
-const login = require("./login/index");
-const main = require("./main/index");
 
 router.get("/", (req, res, next) => {
     let id;
@@ -13,9 +10,5 @@ router.get("/", (req, res, next) => {
     }
     res.render("index.ejs", { title: "Express", id, name });
 });
-
-router.use("/join", join);
-router.use("/login", login);
-router.use("/main", main);
 
 module.exports = router;
