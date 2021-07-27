@@ -26,15 +26,14 @@
                     body: JSON.stringify(datas),
                 });
                 const result = await res.json();
-                if (result === "OK") {
-                    alert("일치하는 계정명이 없습니다.");
+                alert(result.message);
+                if (
+                    result.state === "fail" ||
+                    result.message === "Missing credentials"
+                ) {
                     return false;
                 }
-                if (result.email) {
-                    window.location.href = "/main";
-                    return false;
-                }
-                alert("비밀번호가 틀렸습니다.");
+                window.location.href = "/main";
             };
         </script>
     </body>
