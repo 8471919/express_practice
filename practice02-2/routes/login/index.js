@@ -12,15 +12,15 @@ const connection = mysql.createConnection({
     database: "jsman",
 });
 
-passport.serializeUser((user, done) => {
-    console.log("passport session save : ", user.id);
-    done(null, user.id);
-});
+// passport.serializeUser((user, done) => {
+//     console.log("passport session save : ", user.id);
+//     done(null, user.id);
+// });
 
-passport.deserializeUser((id, done) => {
-    console.log("passport session get id : ", id);
-    done(null, id);
-});
+// passport.deserializeUser((id, done) => {
+//     console.log("passport session get id : ", id);
+//     done(null, id);
+// });
 
 passport.use(
     "hansu-login",
@@ -34,7 +34,6 @@ passport.use(
             const query = connection.query(
                 `select * from user where email="${email}" LIMIT 1`,
                 (err, rows) => {
-                    console.log(req.body);
                     if (err) return done(err);
                     if (!rows.length)
                         return done(null, false, {
@@ -61,14 +60,11 @@ passport.use(
 );
 
 router.get("/", (req, res, next) => {
-    console.log(req.user);
     res.render("login.ejs");
 });
 
 router.post("/", (req, res, next) => {
     passport.authenticate("hansu-login", (err, user, info) => {
-        console.log(info);
-        console.log(user);
         if (err) return res.status(500).json(err);
         if (!user) return res.status(401).json(info);
         req.logIn(user, (err) => {

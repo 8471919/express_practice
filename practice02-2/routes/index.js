@@ -3,6 +3,7 @@ const router = express.Router();
 const join = require("./join/index");
 const login = require("./login/index");
 const main = require("./main/index");
+const logout = require("./logout/index");
 
 router.get("/", (req, res, next) => {
     let id;
@@ -17,5 +18,6 @@ router.get("/", (req, res, next) => {
 router.use("/join", join);
 router.use("/login", login);
 router.use("/main", main);
+router.use("/logout", logout);
 
 module.exports = router;
