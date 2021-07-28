@@ -18,7 +18,22 @@ router.get("/list", (req, res, next) => {
 
 // 1. /movie , GET
 router.get("/", (req, res, next) => {
-    res.render("movie.ejs");
+    const responseData = {};
+
+    const query = connection.query(
+        "select title from movie",
+        function (err, rows) {
+            console.log(rows);
+            if (err) throw err;
+            if (rows.length) {
+                responseData.result = 1;
+                responseData.data = rows;
+            } else {
+                responseData.result = 0;
+            }
+            res.json(responseData);
+        }
+    );
 });
 
 // router.post("/form", (req, res, next) => {
@@ -40,18 +55,18 @@ router.get("/", (req, res, next) => {
 //     const email = req.body.email;
 //     const responseData = {};
 
-//     const query = connection.query(
-//         'select name from user where email="' + email + '"',
-//         function (err, rows) {
-//             if (err) throw err;
-//             if (rows[0]) {
-//                 responseData.result = "ok";
-//                 responseData.name = rows[0].name;
-//             } else {
-//                 responseData.result = "none";
-//                 responseData.name = "";
-//             }
-//             res.json(responseData);
+// const query = connection.query(
+//     'select name from user where email="' + email + '"',
+//     function (err, rows) {
+//         if (err) throw err;
+//         if (rows[0]) {
+//             responseData.result = "ok";
+//             responseData.name = rows[0].name;
+//         } else {
+//             responseData.result = "none";
+//             responseData.name = "";
+//         }
+//         res.json(responseData);
 //         }
 //     );
 // });
