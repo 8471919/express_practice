@@ -55,6 +55,30 @@ router.post("/", (req, res, next) => {
     );
 });
 
+// 3. /movie/:title , GET
+router.get("/:title", (req, res, next) => {
+    //위의 /:title의 title이 req.params에 들어간다.
+    const title = req.params.title;
+    console.log(title);
+    const responseData = {};
+
+    const query = connection.query(
+        "select * from movie where title =?",
+        [title],
+        function (err, rows) {
+            console.log(rows);
+            if (err) throw err;
+            if (rows[0]) {
+                responseData.result = 1;
+                responseData.data = rows;
+            } else {
+                responseData.result = 0;
+            }
+            res.json(responseData);
+        }
+    );
+});
+
 // router.post("/form", (req, res, next) => {
 //     //get : req.param('email');
 //     console.log(req.body.email);
