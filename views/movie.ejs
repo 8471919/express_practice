@@ -172,11 +172,16 @@
                     const result = JSON.parse(xhr.responseText);
 
                     if (result.result === 1) {
-                        let titles = result.data.reduce((acc, cur) => {
-                            acc += "<li>" + cur.title + "</li>";
-                            return acc;
-                        }, "");
-                        resultEle.innerHTML = "<ul>" + titles + "</ul>";
+                        if (!result.data) {
+                            resultEle.innerHTML =
+                                "새로운 영화 데이터가 잘 추가 됐습니다.";
+                        } else {
+                            let titles = result.data.reduce((acc, cur) => {
+                                acc += "<li>" + cur.title + "</li>";
+                                return acc;
+                            }, "");
+                            resultEle.innerHTML = "<ul>" + titles + "</ul>";
+                        }
                     } else {
                         resultEle.innerHTML = "list not found";
                     }

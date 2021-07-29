@@ -36,6 +36,25 @@ router.get("/", (req, res, next) => {
     );
 });
 
+// 2. /movie , POST
+router.post("/", (req, res, next) => {
+    const title = req.body.title;
+    const type = req.body.type;
+    const grade = req.body.grade;
+    const actor = req.body.actor;
+
+    const sql = { title, type, grade, actor };
+
+    const query = connection.query(
+        `insert into movie set ?`,
+        sql,
+        (err, rows) => {
+            if (err) throw err;
+            return res.json({ result: 1 });
+        }
+    );
+});
+
 // router.post("/form", (req, res, next) => {
 //     //get : req.param('email');
 //     console.log(req.body.email);
