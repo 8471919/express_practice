@@ -66,11 +66,32 @@ router.get("/:title", (req, res, next) => {
         "select * from movie where title =?",
         [title],
         function (err, rows) {
-            console.log(rows);
             if (err) throw err;
             if (rows[0]) {
                 responseData.result = 1;
                 responseData.data = rows;
+            } else {
+                responseData.result = 0;
+            }
+            res.json(responseData);
+        }
+    );
+});
+
+// 4. /movie/:title , DELETE
+router.delete("/:title", (req, res, next) => {
+    const title = req.params.title;
+    const responseData = {};
+
+    const query = connection.query(
+        "delete from movie where title =?",
+        [title],
+        function (err, rows) {
+            if (err) throw err;
+            //affectedRows는 삭제할 row가 몇개인지를 판단
+            if (rows.affectedRows > 0) {
+                responseData.result = 1;
+                responseData.data = title;
             } else {
                 responseData.result = 0;
             }
