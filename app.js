@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const session = require("express-session");
@@ -14,6 +15,7 @@ app.listen(3000, () => {
 app.set("view engine", "ejs");
 
 app.use(express.static("public"));
+app.use(cookieParser());
 //bodyParser대신
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
